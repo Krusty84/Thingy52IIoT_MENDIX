@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?TargetDevInfo TargetHwId="RPi.Deb.1.0" TargetSwId="OmnIotCore.08.00"?>
+<HubConfigurationDirectives>
+   <HubRuntimeOptions>
+      <HubDeviceId>555</HubDeviceId>
+      <HubRmtLoginEnabled>N</HubRmtLoginEnabled>
+      <NetworkCacheEnabled>Y</NetworkCacheEnabled>
+      <SSLCertValidation>N</SSLCertValidation>
+      <AutoStartSensors>Y</AutoStartSensors>
+      <EnableEmail>N</EnableEmail>
+      <EmailCacheSize>100</EmailCacheSize>
+      <PrimaryIpServer>api.ipify.org</PrimaryIpServer>
+      <SecondaryIpServer>bot.whatismyipaddress.com</SecondaryIpServer>
+      <MaxBadSvrPkts>10</MaxBadSvrPkts>
+      <MaxSrvrIdle0>1000</MaxSrvrIdle0>
+      <MaxSrvrIdle1>300</MaxSrvrIdle1>
+      <MaxSrvrIdle2>250</MaxSrvrIdle2>
+      <SysCmdBufSize>1024</SysCmdBufSize>
+      <SysEventBufSize>2048</SysEventBufSize>
+      <SysRespBufSize>4096</SysRespBufSize>
+      <SysLogBufSize>8192</SysLogBufSize>
+      <BleBeaconOnlyMode>N</BleBeaconOnlyMode>
+      <BleBcnModeActScan>Y</BleBcnModeActScan>
+      <BleConnTimeoutS>300</BleConnTimeoutS>
+      <BleBeaconTimeoutS>60</BleBeaconTimeoutS>
+      <BleBcnModeMinGapMs>40</BleBcnModeMinGapMs>
+      <ThreadPriAntCommsMgr>60</ThreadPriAntCommsMgr>
+      <ThreadPriBleCommsMgr>60</ThreadPriBleCommsMgr>
+      <ThreadPriSysCommandMgr>50</ThreadPriSysCommandMgr>
+      <ThreadPriEthCommsMgr>50</ThreadPriEthCommsMgr>
+      <ThreadPriEthListener>60</ThreadPriEthListener>
+      <ThreadPriGpioDataMgr>75</ThreadPriGpioDataMgr>
+      <ThreadPriHubMain>50</ThreadPriHubMain>
+      <ThreadPriHubRuleEngine>60</ThreadPriHubRuleEngine>
+      <ThreadPriLogFileMgr>35</ThreadPriLogFileMgr>
+      <ThreadPriEmailCommsMgr>40</ThreadPriEmailCommsMgr>
+      <ThreadPriSchedEventsMgr>85</ThreadPriSchedEventsMgr>
+      <HubGpio></HubGpio>
+   </HubRuntimeOptions>
+   <HubEngineObjectDescriptors>
+      <HubSensorStream>
+         <BleSensorStream Name="Thingy">
+            <SensorType>Thingy</SensorType>
+            <SensorId>D7:77:DB:5F:DE:34</SensorId>
+            <SensorOptions></SensorOptions>
+            <SensorConnectEventName></SensorConnectEventName>
+            <SensorDisconnectEventName></SensorDisconnectEventName>
+            <NewPacketEventName>05-onNewPacket</NewPacketEventName>
+            <SensorActivationList>
+               <SelectedSensor>Temperature Celsius</SelectedSensor>
+               <SelectedSensor>Barometric Pressure hPa</SelectedSensor>
+               <SelectedSensor>Relative Humidity Pct</SelectedSensor>
+               <SelectedSensor>AirQ eCO2 ppm</SelectedSensor>
+               <SelectedSensor>AirQ TVOC ppb</SelectedSensor>
+               <SelectedSensor>Button Depressed</SelectedSensor>
+               <SelectedSensor>Enviromental Config</SelectedSensor>
+               <SelectedSensor>Battery Remaining</SelectedSensor>
+            </SensorActivationList>
+         </BleSensorStream>
+      </HubSensorStream>
+      <HubEvent>
+         <NewSensorPacket Name="05-onNewPacket">
+            <SourceStreamName>Thingy</SourceStreamName>
+         </NewSensorPacket>
+      </HubEvent>
+      <HubState>
+         <SensorConnected Name="StateThingy">
+            <SourceStreamName>Thingy</SourceStreamName>
+         </SensorConnected>
+      </HubState>
+      <HubAction>
+         <PublishData Name="doPublishData">
+            <SourceStreamName>Thingy</SourceStreamName>
+            <MessageFormat>JSON</MessageFormat>
+            <MessageTopic>thingy/data</MessageTopic>
+            <DevCtrlTopic></DevCtrlTopic>
+            <ServerUserName></ServerUserName>
+            <ServerPassword></ServerPassword>
+            <ServerClientId></ServerClientId>
+            <ServerAddress>localhost:1883</ServerAddress>
+            <TrustedStoreFile></TrustedStoreFile>
+            <KeyStoreFile></KeyStoreFile>
+            <ExtOptionsFile></ExtOptionsFile>
+         </PublishData>
+         <EnableSensorStream Name="doEnableThingy">
+            <SourceStreamName>Thingy</SourceStreamName>
+         </EnableSensorStream>
+         <EnableHubAction Name="enableHub">
+            <HubActionName>doEnableThingy</HubActionName>
+         </EnableHubAction>
+         <EnableHubEvent Name="enableHubEvent">
+            <HubEventName>05-onNewPacket</HubEventName>
+         </EnableHubEvent>
+      </HubAction>
+      <HubReport></HubReport>
+      <HubRule>
+         <UserRuleSpec Name="00-onNewPacket">
+            <TriggerEvent>05-onNewPacket</TriggerEvent>
+            <TriggeredAction>enableHub</TriggeredAction>
+            <TriggeredAction>doEnableThingy</TriggeredAction>
+            <TriggeredAction>enableHubEvent</TriggeredAction>
+            <TriggeredAction>doPublishData</TriggeredAction>
+         </UserRuleSpec>
+      </HubRule>
+   </HubEngineObjectDescriptors>
+</HubConfigurationDirectives>
